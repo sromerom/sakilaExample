@@ -26,6 +26,14 @@
                 </option>
             </c:forEach>
         </select>
+        <label for="staffs">Staffs</label>
+        <select name="staffs" id="staffs">
+            <c:forEach var="s" items="${staffs}">
+                <option value="${s.staff_id}">
+                        ${s.first_name} ${s.last_name}
+                </option>
+            </c:forEach>
+        </select>
         <button type="submit">Rent</button>
     </form>
 </c:if>

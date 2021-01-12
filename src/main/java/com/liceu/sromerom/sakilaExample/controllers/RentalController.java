@@ -35,19 +35,20 @@ public class RentalController {
     public String getRental(Model model) {
         List<Film> films = filmService.findAll();
         List<Customer> customers = customerService.findAll();
+        List<Staff> staffs = staffService.findAll();
         model.addAttribute("films", films);
         model.addAttribute("customers", customers);
+        model.addAttribute("staffs", staffs);
         return "rental";
     }
 
     @PostMapping("/rental")
-    public String postRental(@RequestParam("films") Long filmid, @RequestParam("customers") Long customerid, Model model) {
+    public String postRental(@RequestParam("films") Long filmid, @RequestParam("customers") Long customerid, @RequestParam("staffs") Long staffid, Model model) {
         boolean status = false;
-        if (filmid != null && customerid != null) {
+        if (filmid != null && customerid != null && staffid != null) {
             Inventory inventory = inventoryService.getInventoryFromFilmId(filmid);
-            Staff staff = staffService.getStaffByStore(inventory.getStore_id());
-            if (inventory != null && staff != null) {
-                rentalService.rentDVD(inventory.getInventory_id(), customerid, staff.getStaff_id());
+            if (inventory != null) {
+                rentalService.rentDVD(inventory.getInventory_id(), customerid, staffid);
                 status = true;
             }
         }

@@ -110,7 +110,6 @@
                 <!-- #### TOMCAT #### -->
                 <!-- Linux -->
                 <!-- /home/Documents/apache-tomcat-9.0.39/-->
-                <!--
                 <plugin>
                     <groupId>org.codehaus.cargo</groupId>
                     <artifactId>cargo-maven2-plugin</artifactId>
@@ -127,8 +126,8 @@
                         </configuration>
                     </configuration>
                 </plugin>
-                -->
                 <!-- Windows -->
+                <!--
                 <plugin>
                     <groupId>org.codehaus.cargo</groupId>
                     <artifactId>cargo-maven2-plugin</artifactId>
@@ -143,7 +142,8 @@
                             <home>C:\Users\samue\Downloads\apache-tomcat-9.0.39</home>
                         </configuration>
                     </configuration>
-                </plugin>
+                </plugin>sakilaExample [package,cargo:deploy]
+                -->
             </plugins>
         </pluginManagement>
     </build>
