@@ -23,7 +23,6 @@ public class InventoryService {
 
 
     public Inventory getInventoryWithRequiredFilm(long filmid, long storeid) {
-        //List<Inventory> inventoriesWithActualFilm = inventoryRepo.findAllInventoriesByFilmId(filmid);
         List<Inventory> inventoriesWithRequiredFilm = inventoryRepo.findAllInventoriesByStoreAndFilm(filmid, storeid);
         for (Inventory i : inventoriesWithRequiredFilm) {
             boolean stock = isInventoryStock(i.getInventory_id());
@@ -34,7 +33,9 @@ public class InventoryService {
     }
 
     public Inventory getInventoryRentedByCustomer(long customerid, long filmid) {
-        return inventoryRepo.getInventoryRentedByCustomer(customerid, filmid).get(0);
+        List<Inventory> inventoriesWithSpecificFilm = inventoryRepo.getInventoryRentedByCustomer(customerid, filmid);
+
+        return inventoriesWithSpecificFilm.get(inventoriesWithSpecificFilm.size() - 1);
     }
 
 }

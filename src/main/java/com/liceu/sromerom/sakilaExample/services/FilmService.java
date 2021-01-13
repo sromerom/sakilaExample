@@ -20,15 +20,4 @@ public class FilmService {
         return filmRepo.getRentalRate(filmid);
     }
 
-
-    public boolean existsFilm(long filmid, long storeid) {
-        if (filmRepo.filmExists(filmid, storeid).size() == 0) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-
-
 }

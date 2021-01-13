@@ -15,4 +15,8 @@ public class CustomerService {
     public List<Customer> findAll() {
         return customerRepo.findAll();
     }
+
+    public List<Customer> getCustomerWithOverdueDVD() {
+        return customerRepo.getCustomerWithOverdue();
+    }
 }

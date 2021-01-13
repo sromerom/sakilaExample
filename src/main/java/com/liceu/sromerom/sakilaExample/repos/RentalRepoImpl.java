@@ -1,7 +1,5 @@
 package com.liceu.sromerom.sakilaExample.repos;
 
-import com.liceu.sromerom.sakilaExample.entities.Film;
-import com.liceu.sromerom.sakilaExample.entities.Inventory;
 import com.liceu.sromerom.sakilaExample.entities.Rental;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -35,17 +33,10 @@ public class RentalRepoImpl implements RentalRepo{
     }
 
     @Override
-    public Rental isRentByCustomer(long inventoryid, long customerid) {
-        System.out.println("Inventoryid: " + inventoryid);
-        System.out.println("Customerid:" + customerid);
-
-        System.out.println(jdbcTemplate.query(
+    public Rental getRentalByInventoryAndCustomer(long inventoryid, long customerid) {
+        return jdbcTemplate.queryForObject(
                 "SELECT rental_id FROM rental WHERE inventory_id = ? AND customer_id = ? AND return_date IS NULL",
                 new Object[]{inventoryid, customerid},
-                new BeanPropertyRowMapper<>(Rental.class)));
-
-        return jdbcTemplate.query("SELECT rental_id FROM rental WHERE inventory_id = ? AND customer_id = ? AND return_date IS NULL",
-                new Object[]{inventoryid, customerid},
-                new BeanPropertyRowMapper<>(Rental.class)).get(0);
+                Rental.class);
     }
 }

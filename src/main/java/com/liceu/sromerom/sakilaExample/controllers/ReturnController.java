@@ -16,24 +16,12 @@ import java.util.List;
 @Controller
 public class ReturnController {
     @Autowired
-    FilmService filmService;
-
-    @Autowired
-    CustomerService customerService;
-
-    @Autowired
-    InventoryService inventoryService;
-
-    @Autowired
-    StaffService staffService;
-
-    @Autowired
-    RentalService rentalService;
+    ReturnService returnService;
 
     @GetMapping("/return")
     public String getReturn(Model model) {
-        List<Film> films = filmService.findAll();
-        List<Customer> customers = customerService.findAll();
+        List<Film> films = returnService.findAllFilms();
+        List<Customer> customers = returnService.findAllCustomers();
         model.addAttribute("films", films);
         model.addAttribute("customers", customers);
         return "return";
@@ -43,16 +31,16 @@ public class ReturnController {
     public String postReturn(@RequestParam("films") Long filmid, @RequestParam("customers") Long customerid, Model model) {
         boolean status = false;
         if (filmid != null && customerid != null) {
-            //Aconseguim en quin inventori esta el rentat el film seleccionat amb l'usuari seleccionat
-            Inventory inventory = inventoryService.getInventoryRentedByCustomer(customerid, filmid);
+            //Aconseguim en quin inventori esta rentat el film seleccionat amb l'usuari seleccionat
+            Inventory inventory = returnService.getInventoryRentedByCustomer(customerid, filmid);
 
-            //Aconseguim en rentalid que ha sigut rentada, per poder modificar-la i poder retornar-la.
+            //Aconseguim en rentalid amb el que ha sigut rentada, per poder modificar-la i poder retornar-la.
             // Si es dona el cas que no hi troba cap, voldra dir que el client no te rentada la pelicula seleccionada.
-            Long rentalid = rentalService.isRentByCustomer(inventory.getInventory_id(), customerid);
+            Long rentalid = returnService.isRentByCustomer(inventory.getInventory_id(), customerid);
             System.out.println("Rental ID: " + rentalid);
             if (rentalid != null) {
                 //I feim el proces de retornada de la pelicula
-                rentalService.returnDVD(rentalid);
+                returnService.returnDVD(rentalid);
                 status = true;
             }
         }

@@ -14,31 +14,13 @@ import java.util.List;
 @Controller
 public class RentalController {
     @Autowired
-    FilmService filmService;
-
-    @Autowired
-    CustomerService customerService;
-
-    @Autowired
-    InventoryService inventoryService;
-
-    @Autowired
-    StaffService staffService;
-
-    @Autowired
     RentalService rentalService;
-
-    @Autowired
-    StoreService storeService;
-
-    @Autowired
-    PaymentService paymentService;
 
     @GetMapping("/rental")
     public String getRental(Model model) {
-        List<Film> films = filmService.findAll();
-        List<Customer> customers = customerService.findAll();
-        List<Staff> staffs = staffService.findAll();
+        List<Film> films = rentalService.findAllFilms();
+        List<Customer> customers = rentalService.findAllCustomers();
+        List<Staff> staffs = rentalService.findAllStaff();
         model.addAttribute("films", films);
         model.addAttribute("customers", customers);
         model.addAttribute("staffs", staffs);
@@ -47,26 +29,32 @@ public class RentalController {
 
     @PostMapping("/rental")
     public String postRental(@RequestParam("films") Long filmid, @RequestParam("customers") Long customerid, @RequestParam("staffs") Long staffid, Model model) {
-        boolean status = false;
+        //status = -1, Ha ocurregut un error
+        //status = 0, Ha anat correctament
+        //status = 1, No ha trobat inventori disponible
+        short status = -1;
+        //boolean status = false;
         if (filmid != null && customerid != null && staffid != null) {
             //Conseguir storeid;
-            Store store = storeService.getStoreByStaff(staffid);
-            Inventory inventory = inventoryService.getInventoryWithRequiredFilm(filmid, store.getStore_id());
+            Store store = rentalService.getStoreByStaff(staffid);
+            Inventory inventory = rentalService.getInventoryWithRequiredFilm(filmid, store.getStore_id());
             //Inventory inventory = new Inventory();
             if (inventory != null) {
                 //Cream el registre a la taula rental
                 rentalService.rentDVD(inventory.getInventory_id(), customerid, staffid);
 
                 //Aconseguim quan costa la pelicula seleccionada
-                double amount = filmService.getRentalDate(filmid);
+                double amount = rentalService.getRentalDate(filmid);
 
                 //Aconseguim el rentalid del registre que s'ha creat fa uns moments
                 long rentalid = rentalService.isRentByCustomer(inventory.getInventory_id(), customerid);
 
                 //Cream la paga a la taula payment
-                paymentService.paymentProcess(customerid, staffid, rentalid, amount);
+                rentalService.paymentProcess(customerid, staffid, rentalid, amount);
 
-                status = true;
+                status = 0;
+            } else {
+                status = 1;
             }
         }
         model.addAttribute("status", status);

@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface CustomerRepo {
     List<Customer> findAll();
+    List<Customer> getCustomerWithOverdue();
 }

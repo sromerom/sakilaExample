@@ -1,8 +1,5 @@
 package com.liceu.sromerom.sakilaExample.repos;
 
-
-import com.liceu.sromerom.sakilaExample.entities.Customer;
-import com.liceu.sromerom.sakilaExample.entities.Film;
 import com.liceu.sromerom.sakilaExample.entities.Inventory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -32,16 +29,6 @@ public class InventoryRepoImpl implements InventoryRepo {
                 new BeanPropertyRowMapper<>(Inventory.class));
     }
 
-    /*
-    @Override
-    public List<Inventory> findAllInventoriesByFilmId(long filmid) {
-        //SELECT * FROM inventory WHERE film_id = 1
-        return jdbcTemplate.query(
-                "SELECT * FROM inventory WHERE film_id = ?",
-                new Object[]{filmid},
-                new BeanPropertyRowMapper<>(Inventory.class));
-    }
-     */
     @Override
     public boolean isInventoryInStock(long inventoryid) {
         SimpleJdbcCall jdbcCall = new

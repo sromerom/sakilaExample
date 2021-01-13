@@ -6,6 +6,5 @@ import java.util.List;
 
 public interface FilmRepo {
     List<Film> findAll();
-    List<Film> filmExists(long filmid, long storeid);
     double getRentalRate(long filmid);
 }
