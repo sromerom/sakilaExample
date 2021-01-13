@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface InventoryRepo {
     List<Inventory> findAll();
-    List<Inventory> findAllInventoriesByFilmId(long filmid);
+    List<Inventory> findAllInventoriesByStoreAndFilm(long filmid, long storeid);
+    //List<Inventory> findAllInventoriesByFilmId(long filmid);
     boolean isInventoryInStock(long inventoryid);
     List<Inventory> getInventoryRentedByCustomer(long customerid, long filmid);
 

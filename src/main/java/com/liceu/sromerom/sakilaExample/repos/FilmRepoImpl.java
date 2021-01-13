@@ -27,4 +27,18 @@ public class FilmRepoImpl implements FilmRepo {
                 new BeanPropertyRowMapper<>(Film.class));
     }
 
+    @Override
+    public double getRentalRate(long filmid) {
+        return jdbcTemplate.queryForObject(
+                " SELECT rental_rate FROM film WHERE film_id = ?;",
+                new Object[]{filmid},
+                Double.class);
+        /*
+        return jdbcTemplate.query(
+                "SELECT * FROM inventory WHERE film_id = ? AND store_id = ?",
+                new Object[]{filmid},
+                new BeanPropertyRowMapper<>(Film.class)).get(0);
+         */
+    }
+
 }

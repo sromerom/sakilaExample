@@ -22,9 +22,10 @@ public class InventoryService {
     }
 
 
-    public Inventory getInventoryFromFilmId(long filmid) {
-        List<Inventory> inventoriesWithActualFilm = inventoryRepo.findAllInventoriesByFilmId(filmid);
-        for (Inventory i : inventoriesWithActualFilm) {
+    public Inventory getInventoryWithRequiredFilm(long filmid, long storeid) {
+        //List<Inventory> inventoriesWithActualFilm = inventoryRepo.findAllInventoriesByFilmId(filmid);
+        List<Inventory> inventoriesWithRequiredFilm = inventoryRepo.findAllInventoriesByStoreAndFilm(filmid, storeid);
+        for (Inventory i : inventoriesWithRequiredFilm) {
             boolean stock = isInventoryStock(i.getInventory_id());
             if (stock) return i;
         }

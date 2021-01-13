@@ -25,6 +25,15 @@ public class InventoryRepoImpl implements InventoryRepo {
     }
 
     @Override
+    public List<Inventory> findAllInventoriesByStoreAndFilm(long filmid, long storeid) {
+        return jdbcTemplate.query(
+                "SELECT * FROM inventory WHERE film_id = ? AND store_id = ?",
+                new Object[]{filmid, storeid},
+                new BeanPropertyRowMapper<>(Inventory.class));
+    }
+
+    /*
+    @Override
     public List<Inventory> findAllInventoriesByFilmId(long filmid) {
         //SELECT * FROM inventory WHERE film_id = 1
         return jdbcTemplate.query(
@@ -32,7 +41,7 @@ public class InventoryRepoImpl implements InventoryRepo {
                 new Object[]{filmid},
                 new BeanPropertyRowMapper<>(Inventory.class));
     }
-
+     */
     @Override
     public boolean isInventoryInStock(long inventoryid) {
         SimpleJdbcCall jdbcCall = new
