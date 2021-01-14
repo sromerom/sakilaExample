@@ -63,7 +63,7 @@ public class RentService {
                 System.out.println("Inventory ID: " + inventory.getInventory_id());
                 System.out.println("Customer ID: " + customerid);
                 System.out.println(rentalRepo.getRentalByInventoryAndCustomer(inventory.getInventory_id(), customerid));
-                Long rentalid = rentalRepo.getRentalByInventoryAndCustomer(inventory.getInventory_id(), customerid).getRental_id();
+                Long rentalid = rentalRepo.getRentalByInventoryAndCustomer(inventory.getInventory_id(), customerid).getRental_id();//inv, date, client
 
                 //Cream la paga a la taula payment
                 paymentRepo.paymentProcess(customerid, staffid, rentalid, amount, lt.toString());
