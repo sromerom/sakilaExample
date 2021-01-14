@@ -25,8 +25,8 @@ public class InventoryRepoImpl implements InventoryRepo {
     public List<Inventory> findAllInventoriesByStoreAndFilm(long filmid, long storeid) {
         return jdbcTemplate.query(
                 "SELECT * FROM inventory WHERE film_id = ? AND store_id = ?",
-                new Object[]{filmid, storeid},
-                new BeanPropertyRowMapper<>(Inventory.class));
+                new BeanPropertyRowMapper<>(Inventory.class),
+                filmid, storeid);
     }
 
     @Override
@@ -41,10 +41,9 @@ public class InventoryRepoImpl implements InventoryRepo {
     public List<Inventory> getInventoryRentedByCustomer(long customerid, long filmid) {
         // SELECT inventory.inventory_id, inventory.film_id, inventory.store_id, inventory.last_update FROM rental INNER JOIN inventory ON rental.inventory_id = inventory.inventory_id WHERE rental.customer_id = 10 AND inventory.film_id = 10 AND return_date IS NULL;
         String query = "SELECT inventory.inventory_id, inventory.film_id, inventory.store_id, inventory.last_update FROM rental INNER JOIN inventory ON rental.inventory_id = inventory.inventory_id WHERE rental.customer_id = ? AND inventory.film_id = ? AND return_date IS NULL";
-
         return jdbcTemplate.query(query,
-                new Object[]{customerid, filmid},
-                new BeanPropertyRowMapper<>(Inventory.class));
+                new BeanPropertyRowMapper<>(Inventory.class),
+                customerid, filmid);
     }
 
 

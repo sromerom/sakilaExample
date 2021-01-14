@@ -14,13 +14,13 @@ import java.util.List;
 @Controller
 public class RentalController {
     @Autowired
-    RentalService rentalService;
+    RentService rentService;
 
     @GetMapping("/rental")
     public String getRental(Model model) {
-        List<Film> films = rentalService.findAllFilms();
-        List<Customer> customers = rentalService.findAllCustomers();
-        List<Staff> staffs = rentalService.findAllStaff();
+        List<Film> films = rentService.findAllFilms();
+        List<Customer> customers = rentService.findAllCustomers();
+        List<Staff> staffs = rentService.findAllStaff();
         model.addAttribute("films", films);
         model.addAttribute("customers", customers);
         model.addAttribute("staffs", staffs);
@@ -29,34 +29,7 @@ public class RentalController {
 
     @PostMapping("/rental")
     public String postRental(@RequestParam("films") Long filmid, @RequestParam("customers") Long customerid, @RequestParam("staffs") Long staffid, Model model) {
-        //status = -1, Ha ocurregut un error
-        //status = 0, Ha anat correctament
-        //status = 1, No ha trobat inventori disponible
-        short status = -1;
-        //boolean status = false;
-        if (filmid != null && customerid != null && staffid != null) {
-            //Conseguir storeid;
-            Store store = rentalService.getStoreByStaff(staffid);
-            Inventory inventory = rentalService.getInventoryWithRequiredFilm(filmid, store.getStore_id());
-            //Inventory inventory = new Inventory();
-            if (inventory != null) {
-                //Cream el registre a la taula rental
-                rentalService.rentDVD(inventory.getInventory_id(), customerid, staffid);
-
-                //Aconseguim quan costa la pelicula seleccionada
-                double amount = rentalService.getRentalDate(filmid);
-
-                //Aconseguim el rentalid del registre que s'ha creat fa uns moments
-                long rentalid = rentalService.isRentByCustomer(inventory.getInventory_id(), customerid);
-
-                //Cream la paga a la taula payment
-                rentalService.paymentProcess(customerid, staffid, rentalid, amount);
-
-                status = 0;
-            } else {
-                status = 1;
-            }
-        }
+        short status = rentService.rentDVD(filmid, customerid, staffid);
         model.addAttribute("status", status);
         return "rental";
     }

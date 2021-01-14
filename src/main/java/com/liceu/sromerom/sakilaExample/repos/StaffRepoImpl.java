@@ -1,6 +1,5 @@
 package com.liceu.sromerom.sakilaExample.repos;
 
-import com.liceu.sromerom.sakilaExample.entities.Rental;
 import com.liceu.sromerom.sakilaExample.entities.Staff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class StaffRepoImpl implements StaffRepo{
+public class StaffRepoImpl implements StaffRepo {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
@@ -25,5 +24,13 @@ public class StaffRepoImpl implements StaffRepo{
                 "SELECT * FROM staff WHERE store_id = ?",
                 new Object[]{storeid},
                 Staff.class);
+    }
+
+    @Override
+    public Long getStoreIdFromStaff(long staffid) {
+        return jdbcTemplate.queryForObject(
+                "SELECT store_id FROM staff WHERE staff_id = ?",
+                Long.class,
+                staffid);
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class RentalRepoImpl implements RentalRepo{
+public class RentalRepoImpl implements RentalRepo {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -35,8 +35,8 @@ public class RentalRepoImpl implements RentalRepo{
     @Override
     public Rental getRentalByInventoryAndCustomer(long inventoryid, long customerid) {
         return jdbcTemplate.queryForObject(
-                "SELECT rental_id FROM rental WHERE inventory_id = ? AND customer_id = ? AND return_date IS NULL",
-                new Object[]{inventoryid, customerid},
-                Rental.class);
+                "SELECT * FROM rental WHERE inventory_id = ? AND customer_id = ? AND return_date IS NULL",
+                new BeanPropertyRowMapper<>(Rental.class),
+                inventoryid, customerid);
     }
 }

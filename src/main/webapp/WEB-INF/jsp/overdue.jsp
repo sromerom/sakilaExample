@@ -9,15 +9,17 @@
 <h1>Overdue Customers</h1>
 <table>
     <tr>
-        <th>Customer ID</th>
         <th>Name</th>
-        <th>Email</th>
+        <th>Phone</th>
+        <th>Film</th>
+        <th>Theorical Return Date</th>
     </tr>
         <c:forEach var="co" items="${customersOverdue}">
             <tr>
-                <td>${co.customer_id}</td>
-                <td>${co.first_name} ${co.last_name}</td>
-                <td>${co.email}</td>
+                <td>${co.name}</td>
+                <td>${co.phone}</td>
+                <td>${co.title}</td>
+                <td>${co.theorical_return_date}</td>
             </tr>
         </c:forEach>
 </table>

@@ -8,8 +8,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
 @Service
-public class RentalService {
+public class MainService {
     @Autowired
     FilmRepo filmRepo;
 
@@ -24,9 +25,6 @@ public class RentalService {
 
     @Autowired
     RentalRepo rentalRepo;
-
-    @Autowired
-    StoreRepo storeRepo;
 
     @Autowired
     PaymentRepo paymentRepo;
@@ -69,8 +67,11 @@ public class RentalService {
 
     public Inventory getInventoryRentedByCustomer(long customerid, long filmid) {
         List<Inventory> inventoriesWithSpecificFilm = inventoryRepo.getInventoryRentedByCustomer(customerid, filmid);
-
-        return inventoriesWithSpecificFilm.get(inventoriesWithSpecificFilm.size() - 1);
+        if (inventoriesWithSpecificFilm.size() != 0) {
+            return inventoriesWithSpecificFilm.get(inventoriesWithSpecificFilm.size() - 1);
+        } else {
+            return null;
+        }
     }
 
     public List<Staff> findAllStaff() {
@@ -99,12 +100,17 @@ public class RentalService {
         return rentalRepo.returnDVD(lt.toString(), rentalid);
     }
 
+    /*
     public List<Store> findAllStores() {
         return storeRepo.findAll();
     }
 
     public Store getStoreByStaff(long staffid) {
         return storeRepo.getStoreByStaff(staffid);
+    }
+     */
+    public long getStoreIdFromStaff(long staffid) {
+        return staffRepo.getStoreIdFromStaff(staffid);
     }
 
     public List<Payment> findAllPayments() {
@@ -114,4 +120,5 @@ public class RentalService {
         LocalDateTime lt = LocalDateTime.now();
         return paymentRepo.paymentProcess(customerid, staffid, rentalid, amount, lt.toString());
     }
+
 }

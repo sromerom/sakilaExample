@@ -1,7 +1,8 @@
 package com.liceu.sromerom.sakilaExample.controllers;
 
-import com.liceu.sromerom.sakilaExample.entities.Customer;
-import com.liceu.sromerom.sakilaExample.services.CustomerService;
+
+import com.liceu.sromerom.sakilaExample.entities.OverdueDVD;
+import com.liceu.sromerom.sakilaExample.services.OverdueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,14 +12,12 @@ import java.util.List;
 
 @Controller
 public class OverdueController {
-
     @Autowired
-    CustomerService customerService;
-
+    OverdueService overdueService;
 
     @GetMapping("/overdue")
     public String getReturn(Model model) {
-        List<Customer> customersOverdue = customerService.getCustomerWithOverdueDVD();
+        List<OverdueDVD> customersOverdue = overdueService.findAll();
         model.addAttribute("customersOverdue", customersOverdue);
         return "overdue";
     }

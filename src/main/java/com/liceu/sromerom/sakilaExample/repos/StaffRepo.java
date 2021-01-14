@@ -7,4 +7,5 @@ import java.util.List;
 public interface StaffRepo {
     List<Staff> findAll();
     Staff getStaffByStore(long storeid);
+    Long getStoreIdFromStaff(long staffid);
 }

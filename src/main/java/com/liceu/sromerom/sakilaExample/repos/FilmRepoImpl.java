@@ -20,11 +20,11 @@ public class FilmRepoImpl implements FilmRepo {
     }
 
     @Override
-    public double getRentalRate(long filmid) {
+    public Double getRentalRate(long filmid) {
         return jdbcTemplate.queryForObject(
-                " SELECT rental_rate FROM film WHERE film_id = ?;",
-                new Object[]{filmid},
-                Double.class);
+                "SELECT rental_rate FROM film WHERE film_id = ?",
+                Double.class,
+                filmid);
     }
 
 }
