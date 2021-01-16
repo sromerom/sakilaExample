@@ -19,15 +19,7 @@ public class StaffRepoImpl implements StaffRepo {
     }
 
     @Override
-    public Staff getStaffByStore(long storeid) {
-        return jdbcTemplate.queryForObject(
-                "SELECT * FROM staff WHERE store_id = ?",
-                new Object[]{storeid},
-                Staff.class);
-    }
-
-    @Override
-    public Long getStoreIdFromStaff(long staffid) {
+    public Long getStoreIdByStaff(long staffid) {
         return jdbcTemplate.queryForObject(
                 "SELECT store_id FROM staff WHERE staff_id = ?",
                 Long.class,

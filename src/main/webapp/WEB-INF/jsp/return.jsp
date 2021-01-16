@@ -7,48 +7,53 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 </head>
-<body>
-<h1>Return a film:</h1>
+<body style="background-color: whitesmoke">
 <c:choose>
     <c:when test="${empty status}">
-        <form action="${pageContext.request.contextPath}/return" method="POST">
+        <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%)">
+            <h1>Return a film:</h1>
+            <form action="${pageContext.request.contextPath}/return" method="POST">
 
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <label class="input-group-text" for="films">Films</label>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="films">Films</label>
+                    </div>
+                    <select class="custom-select" id="films" name="films">
+                        <option selected>Choose...</option>
+                        <c:forEach var="f" items="${films}">
+                            <option value="${f.film_id}">
+                                    ${f.title}
+                            </option>
+                        </c:forEach>
+                    </select>
                 </div>
-                <select class="custom-select" id="films" name="films">
-                    <option selected>Choose...</option>
-                    <c:forEach var="f" items="${films}">
-                        <option value="${f.film_id}">
-                                ${f.title}
-                        </option>
-                    </c:forEach>
-                </select>
-            </div>
 
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <label class="input-group-text" for="customers">Customers</label>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="customers">Customers</label>
+                    </div>
+                    <select class="custom-select" id="customers" name="customers">
+                        <option selected>Choose...</option>
+                        <c:forEach var="c" items="${customers}">
+                            <option value="${c.customer_id}">
+                                    ${c.first_name} ${c.last_name}
+                            </option>
+                        </c:forEach>
+                    </select>
                 </div>
-                <select class="custom-select" id="customers" name="customers">
-                    <option selected>Choose...</option>
-                    <c:forEach var="c" items="${customers}">
-                        <option value="${c.customer_id}">
-                                ${c.first_name} ${c.last_name}
-                        </option>
-                    </c:forEach>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Return Film</button>
-        </form>
+                <button type="submit" class="btn btn-primary">Return Film</button>
+            </form>
+        </div>
     </c:when>
     <c:otherwise>
-        <c:if test="${status == -1}"><h2>DVD return error.</h2></c:if>
-        <c:if test="${status == 0}"><h2>DVD return successful.</h2></c:if>
-        <c:if test="${status == 1}"><h2>Are you sure you have to return this film?. You don't have this film.</h2></c:if>
+        <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%)">
+            <c:if test="${status == -1}"><h2>DVD return error.</h2></c:if>
+            <c:if test="${status == 0}"><h2>DVD return successful.</h2></c:if>
+            <c:if test="${status == 1}"><h2>Are you sure you have to return this film?. You don't have this film.</h2></c:if>
+        </div>
     </c:otherwise>
 </c:choose>
+<a href="/">Go Back</a>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
         integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU"
         crossorigin="anonymous"></script>

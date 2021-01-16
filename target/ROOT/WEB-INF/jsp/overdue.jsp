@@ -3,21 +3,20 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Overdue Customers</title>
+    <title>Overdue DVDs</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
 </head>
-<body>
-<h1>Overdued Customers</h1>
-
+<body style="background-color: whitesmoke">
+<h1 style="text-align: center">Overdued DVDs</h1>
+<a href="/">Go Back</a>
 <table class="table table-striped">
     <thead>
     <tr>
         <th scope="col">Name</th>
         <th scope="col">Phone</th>
         <th scope="col">Film</th>
-        <th scope="col">Theorical Return Date</th>
     </tr>
     </thead>
     <tbody>
@@ -26,7 +25,6 @@
             <td>${co.name}</td>
             <td>${co.phone}</td>
             <td>${co.title}</td>
-            <td>${co.theorical_return_date}</td>
         </tr>
     </c:forEach>
     </tbody>

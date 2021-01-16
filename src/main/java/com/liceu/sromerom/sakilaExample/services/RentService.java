@@ -40,34 +40,34 @@ public class RentService {
         return staffRepo.findAll();
     }
 
+    //status = -1, Ha ocurregut un error
+    //status = 0, Ha anat correctament
+    //status = 1, No ha trobat inventori disponible
     public short rentDVD(Long filmid, Long customerid, Long staffid) {
-        //status = -1, Ha ocurregut un error
-        //status = 0, Ha anat correctament
-        //status = 1, No ha trobat inventori disponible
         short status = -1;
         LocalDateTime lt = LocalDateTime.now();
         if (filmid != null && customerid != null && staffid != null) {
             //Conseguir storeid;
-            Long storeid = staffRepo.getStoreIdFromStaff(staffid);
-            //Inventory inventory = inventoryRepo.getInventoryWithRequiredFilm(filmid, storeid);
+            Long storeid = staffRepo.getStoreIdByStaff(staffid);
+
+            //A partir de la pelicula y de la store, agafam tots els inventaris que compleixin amb aquests requisits
             List<Inventory> inventoriesWithRequiredFilm = inventoryRepo.findAllInventoriesByStoreAndFilm(filmid, storeid);
+
+            //Agafam el primer disponible, que no estigui rentat previament
             Inventory inventory = checkInventories(inventoriesWithRequiredFilm);
+
+            //Si no hi troba cap inventory, voldra dir que no hi cap inventory disponible per rentar
             if (inventory != null) {
-                //Cream el registre a la taula rental
-                rentalRepo.rent(lt.toString(), inventory.getInventory_id(), customerid, staffid);
+                //Cream el registre a la taula rental. Al mateix temps que feim aixo, rebrem el rentalid amb el que se ha creat el registre
+                Long rentalid = rentalRepo.rent(lt.toString(), inventory.getInventory_id(), customerid, staffid);
 
                 //Aconseguim quan costa la pelicula seleccionada
                 double amount = filmRepo.getRentalRate(filmid);
 
-                //Aconseguim el rentalid del registre que s'ha creat fa uns moments
-                System.out.println("Inventory ID: " + inventory.getInventory_id());
-                System.out.println("Customer ID: " + customerid);
-                System.out.println(rentalRepo.getRentalByInventoryAndCustomer(inventory.getInventory_id(), customerid));
-                Long rentalid = rentalRepo.getRentalByInventoryAndCustomer(inventory.getInventory_id(), customerid).getRental_id();//inv, date, client
-
                 //Cream la paga a la taula payment
                 paymentRepo.paymentProcess(customerid, staffid, rentalid, amount, lt.toString());
 
+                //I indicam que tot ha sortit correctament
                 status = 0;
             } else {
                 status = 1;

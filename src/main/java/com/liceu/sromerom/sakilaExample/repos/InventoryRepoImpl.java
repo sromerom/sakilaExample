@@ -38,7 +38,7 @@ public class InventoryRepoImpl implements InventoryRepo {
     }
 
     @Override
-    public List<Inventory> getInventoryRentedByCustomer(long customerid, long filmid) {
+    public List<Inventory> getInventoriesRentedByCustomerAndFilm(long customerid, long filmid) {
         // SELECT inventory.inventory_id, inventory.film_id, inventory.store_id, inventory.last_update FROM rental INNER JOIN inventory ON rental.inventory_id = inventory.inventory_id WHERE rental.customer_id = 10 AND inventory.film_id = 10 AND return_date IS NULL;
         String query = "SELECT inventory.inventory_id, inventory.film_id, inventory.store_id, inventory.last_update FROM rental INNER JOIN inventory ON rental.inventory_id = inventory.inventory_id WHERE rental.customer_id = ? AND inventory.film_id = ? AND return_date IS NULL";
         return jdbcTemplate.query(query,

@@ -4,9 +4,17 @@ import com.liceu.sromerom.sakilaExample.entities.Rental;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class RentalRepoImpl implements RentalRepo {
@@ -20,11 +28,24 @@ public class RentalRepoImpl implements RentalRepo {
     }
 
     @Override
-    public int rent(String rentaldate, long inventoryid, long customerid, long staffid) {
-        //INSERT INTO rental(rental_date, inventory_id, customer_id, staff_id) VALUES(NOW(), 10, 3, 1);
+    public Long rent(String rentaldate, long inventoryid, long customerid, long staffid) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        String sql = "INSERT INTO rental(rental_date, inventory_id, customer_id, staff_id) VALUES(?, ?, ?, ?)";
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, rentaldate);
+            ps.setLong(2, inventoryid);
+            ps.setLong(3, customerid);
+            ps.setLong(4, staffid);
+            return ps;
+        }, keyHolder);
+        return keyHolder.getKey().longValue();
+    }
+
+        /*
         return jdbcTemplate.update(
                 "INSERT INTO rental(rental_date, inventory_id, customer_id, staff_id) VALUES(?, ?, ?, ?)", rentaldate, inventoryid, customerid, staffid);
-    }
+         */
 
     @Override
     public int returnDVD(String returndate, long rentalid) {

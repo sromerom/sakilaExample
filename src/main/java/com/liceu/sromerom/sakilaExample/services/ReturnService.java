@@ -38,27 +38,29 @@ public class ReturnService {
         return customerRepo.findAll();
     }
 
+    //status = -1, Ha ocurregut un error
+    //status = 0, Ha anat correctament
+    //status = 1, No ha trobat inventori disponible
     public short returnDVD(Long filmid, Long customerid) {
-        //status = -1, Ha ocurregut un error
-        //status = 0, Ha anat correctament
-        //status = 1, No ha trobat inventori disponible
         short status = -1;
         LocalDateTime lt = LocalDateTime.now();
+
         if (filmid != null && customerid != null) {
             //Aconseguim en quin inventori esta rentat el film seleccionat amb l'usuari seleccionat
-            List<Inventory> inventoriesWithSpecificFilm = inventoryRepo.getInventoryRentedByCustomer(customerid, filmid);
+            List<Inventory> inventoriesWithSpecificFilm = inventoryRepo.getInventoriesRentedByCustomerAndFilm(customerid, filmid);
             Inventory inventory;
+
+            //Si es dona el cas que no hi cap inventori per retornar, retornarem null i en conseqüencia, retornarem un status 1
             if (inventoriesWithSpecificFilm.size() != 0) {
-                inventory = inventoriesWithSpecificFilm.get(inventoriesWithSpecificFilm.size() - 1);
+                //
+                inventory = inventoriesWithSpecificFilm.get(0);
             } else {
                 inventory = null;
             }
 
-            //Si no hi ha inventori retornarem
             if (inventory != null) {
                 //Aconseguim en rentalid amb el que ha sigut rentada, per poder modificar-la i poder retornar-la.
                 // Si es dona el cas que no hi troba cap, voldra dir que el client no te rentada la pelicula seleccionada.
-                //Long rentalid = mainService.isRentByCustomer(inventory.getInventory_id(), customerid);
                 Long rentalid = rentalRepo.getRentalByInventoryAndCustomer(inventory.getInventory_id(), customerid).getRental_id();
                 if (rentalid != null) {
                     //I feim el proces de retornada de la pelicula
